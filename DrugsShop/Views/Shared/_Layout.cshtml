@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using DrugsShop.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,6 +7,17 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @{
+        string status;
+        if (CurrentUser.Status == Status.loggedIn)
+        {
+            status = "logged in";
+        }
+        else
+        {
+            status = "free user";
+        }
+    }
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -21,8 +33,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Вход", "Login", "User")</li>
+                    <li>@Html.ActionLink("Регистрация", "Register", "User")</li>
+                    <li>@Html.ActionLink("Выход", "Logout", "User", new { confirmation = false }, null)</li>
+                    <li>@Html.ActionLink(status, "", "")</li>
                 </ul>
             </div>
         </div>

@@ -1,0 +1,89 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@using DrugsShop.Models
+@model IPagedList<Product>
+@{
+//ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Index", "Product", FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.SearchString as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table>
+    <tr>
+        <th>
+            @Html.ActionLink("Product name", "Index", new { searchString = ViewBag.SearchString, sortParam = ViewBag.NameSortParam, onlyWithoutRecipe = ViewBag.OnlyWithoutRecipe })
+        </th>
+        <th>
+            @Html.ActionLink("Cost", "Index", new { searchString = ViewBag.SearchString, sortParam = (ViewBag.CostSortParam ?? "cost"), onlyWithoutRecipe = ViewBag.OnlyWithoutRecipe })
+        </th>
+        <th>
+            By recipe
+        </th>
+        <th>
+            Amount
+        </th>
+        <th>
+            @Html.ActionLink("Все медикоменты", "Index", new { searchString = ViewBag.SearchString, sortParam = ViewBag.NameSortParam, onlyWithoutRecipe = false })
+        </th>
+        <th>
+            @Html.ActionLink("Только без рецепта", "Index", new { searchString = ViewBag.SearchString, sortParam = ViewBag.NameSortParam, onlyWithoutRecipe = true })
+        </th>
+        
+    </tr>
+    @foreach (Product product in Model)
+    {
+        
+        <tr>
+            <td>
+                @product.Name
+            </td>
+            <td>
+                @product.Cost
+            </td>s
+            <td>
+                @{
+                    string recipe = "без рецепта";
+                    if (product.ByRecipe) { recipe = "по рецепту"; };
+                }
+                @recipe
+            </td>
+            <td>
+                 <button class="btn btn-danger btn-link" value="@product.Id" onload="updateCart(@product.Id)">Заказать</button> 
+                <input type="text" id="@product.Id" value="0" onload="updateCart(@product.Id)" />
+                </td>
+        </tr>
+    }
+</table>
+
+<script>
+    function clickAdd(id) {
+        var textbox = document.getElementById(id);
+        textbox.value = +textbox.value + +1;
+        localStorage.setItem(id, textbox.value);
+    }
+</script>
+<script>
+    function updateCart(id)
+    {
+        var textbox = document.getElementById(id);
+        var amount = localStorage.getItem(id);
+        if (amount == null)
+            textbox.value = 0;
+        else
+            textbox.value = amount;
+    }
+</script>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, searchString = ViewBag.SearchString, sortParam = ViewBag.CurrentSort, onlyWithoutRecipe = ViewBag.OnlyWithoutRecipe }))
+
+
+    

@@ -3,14 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DrugsShop.Models;
 
 namespace DrugsShop.Controllers
 {
     public class HomeController : Controller
     {
+        DrugsShopEntities db = new DrugsShopEntities();
+
         public ActionResult Index()
         {
-            return View();
+
+            IEnumerable<Order> q =
+                from o in db.Orders
+                where o.ClientId == 2
+                select o;
+            return View(q);
         }
 
         public ActionResult About()
