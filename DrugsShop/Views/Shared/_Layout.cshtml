@@ -36,6 +36,8 @@
                     <li>@Html.ActionLink("Вход", "Login", "User")</li>
                     <li>@Html.ActionLink("Регистрация", "Register", "User")</li>
                     <li>@Html.ActionLink("Выход", "Logout", "User", new { confirmation = false }, null)</li>
+                    <li><button value="" onclick="openCart()">Корзина</button>
+                    </li>
                     <li>@Html.ActionLink(status, "", "")</li>
                 </ul>
             </div>
@@ -52,5 +54,8 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/cart.js"> </script>
+
 </body>
 </html>

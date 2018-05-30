@@ -1,0 +1,43 @@
+﻿@using DrugsShop.Models
+@model List<CartProduct>
+@{
+    ViewBag.Title = "GetCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetCart</h2>
+<table>
+    <tr>
+        <th>
+            Название
+        </th>
+        <th>
+            Количество
+        </th>
+        <th>
+            Цена
+        </th>
+        <th>
+            Сумма
+        </th>
+        <th>
+            Рецепт
+        </th>
+
+    </tr>
+    @{
+        foreach (CartProduct cart in Model)
+        {
+            <tr>
+                <td>@cart.Name</td>
+                <td>@cart.Amount</td>
+                <td>@cart.Cost</td>
+                <td>@cart.Sum</td>
+                <td>@cart.ByRecipe</td>
+            </tr>
+        }
+    }
+</table>
+
+Итого: @ViewBag.Sum
+<button onclick="chechout(@CurrentUser.Status)"> Оформить заказ</button>
