@@ -12,14 +12,15 @@ namespace DrugsShop.Controllers
         DrugsShopEntities db = new DrugsShopEntities();
         // GET: Cart
 
-        [HttpGet]
-        public ActionResult GetCart()
+        //[HttpGet]
+        public ActionResult GetCart(CartProduct[] cart, int sum)
         {
-            return View();
+            ViewBag.Sum = sum;
+            return View(cart);
         }
 
-        [HttpPost]
-        public ActionResult GetCart(Position[] position)
+        //[HttpPost]
+        public ActionResult Calculate(Position[] position)
         {
             int sum = 0;
             List<CartProduct> cart = new List<CartProduct>();
@@ -40,8 +41,7 @@ namespace DrugsShop.Controllers
                 cart.Add(product);
             }
 
-            ViewBag.Sum = sum;
-            return View(cart);
+            return RedirectToAction("GetCart", "Cart", new { cart = cart.ToArray(), sum = sum });
         }
 
         public ActionResult Checkout(Position[] positions)

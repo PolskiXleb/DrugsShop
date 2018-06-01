@@ -73,8 +73,7 @@ function openCart() {
     var products = getProducts();
 
     $.ajax({
-        //url: 'Cart/GetCart',
-        url: '@(Url.Action("Cart", "GetCart"))',
+        url: 'Cart/Calculate',
         type: 'POST',
         data: JSON.stringify(products),
         contentType: "application/json;charset=utf-8"
