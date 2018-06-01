@@ -3,35 +3,43 @@
 @using DrugsShop.Models
 @model IPagedList<Product>
 @{
-//ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Head.cshtml";
 }
 
 @using (Html.BeginForm("Index", "Product", FormMethod.Get))
 {
-    <p>
-        Find by name: @Html.TextBox("SearchString", ViewBag.SearchString as string)
-        <input type="submit" value="Search" />
-    </p>
+    <link href="@Url.Content("~/Content/Site.css")"rel="stylesheet" type="text/css" />
+     
+        <p class="d1">
+            <input type="text" placeholder="Искать здесь...">
+            <button type="submit"></button>
+        </p>
+        @*Find by name: @Html.TextBox("SearchString", ViewBag.SearchString as string)
+        <input type="submit" value="Search" />*@
+    
 }
 
-<table>
+<div>
+    <link href="~/Content/Site.css" type="text/css" rel="stylesheet" />
+    
+<table >
     <tr>
-        <th>
+        <th id="navbar">
             @Html.ActionLink("Product name", "Index", new { searchString = ViewBag.SearchString, sortParam = ViewBag.NameSortParam, onlyWithoutRecipe = ViewBag.OnlyWithoutRecipe })
         </th>
-        <th>
+        <th id="navbar">
             @Html.ActionLink("Cost", "Index", new { searchString = ViewBag.SearchString, sortParam = (ViewBag.CostSortParam ?? "cost"), onlyWithoutRecipe = ViewBag.OnlyWithoutRecipe })
         </th>
-        <th>
+        <th id="navbar">
             By recipe
         </th>
-        <th>
+        <th id="navbar">
             Amount
         </th>
-        <th>
+        <th id="navbar">
             @Html.ActionLink("Все медикоменты", "Index", new { searchString = ViewBag.SearchString, sortParam = ViewBag.NameSortParam, onlyWithoutRecipe = false })
         </th>
-        <th>
+        <th id="navbar">
             @Html.ActionLink("Только без рецепта", "Index", new { searchString = ViewBag.SearchString, sortParam = ViewBag.NameSortParam, onlyWithoutRecipe = true })
         </th>
         
@@ -41,11 +49,11 @@
         
         <tr>
             <td>
-                @product.Name
+                <p class="letter">@product.Name</p>
             </td>
             <td>
                 @product.Cost
-            </td>s
+            </td>
             <td>
                 @{
                     string recipe = "без рецепта";
@@ -60,6 +68,7 @@
         </tr>
     }
 </table>
+    </div>
 
 <script>
     function clickAdd(id) {
@@ -80,10 +89,10 @@
     }
 </script>
 
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@*<div class="d3">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>*@
 
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, searchString = ViewBag.SearchString, sortParam = ViewBag.CurrentSort, onlyWithoutRecipe = ViewBag.OnlyWithoutRecipe }))
+<center>@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, searchString = ViewBag.SearchString, sortParam = ViewBag.CurrentSort, onlyWithoutRecipe = ViewBag.OnlyWithoutRecipe }))</center>
 
 
     
