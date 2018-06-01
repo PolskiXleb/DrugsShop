@@ -47,7 +47,7 @@
     @foreach (Product product in Model)
     {
         
-        <tr>
+        <tr id="products">
             <td>
                 <p class="letter">@product.Name</p>
             </td>
@@ -62,32 +62,16 @@
                 @recipe
             </td>
             <td>
-                 <button class="btn btn-danger btn-link" value="@product.Id" onload="updateCart(@product.Id)">Заказать</button> 
-                <input type="text" id="@product.Id" value="0" onload="updateCart(@product.Id)" />
-                </td>
+                 <button class="btn btn-danger btn-link" value="@product.Id" onclick="clickAdd(@product.Id)">Заказать</button> 
+            </td>
+            <td >
+                <input type="text" class="count" id="@product.Id" value="" />
+            </td>
         </tr>
     }
 </table>
     </div>
 
-<script>
-    function clickAdd(id) {
-        var textbox = document.getElementById(id);
-        textbox.value = +textbox.value + +1;
-        localStorage.setItem(id, textbox.value);
-    }
-</script>
-<script>
-    function updateCart(id)
-    {
-        var textbox = document.getElementById(id);
-        var amount = localStorage.getItem(id);
-        if (amount == null)
-            textbox.value = 0;
-        else
-            textbox.value = amount;
-    }
-</script>
 
 @*<div class="d3">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>*@
 
@@ -95,4 +79,4 @@
     new { page, searchString = ViewBag.SearchString, sortParam = ViewBag.CurrentSort, onlyWithoutRecipe = ViewBag.OnlyWithoutRecipe }))</center>
 
 
-    
+
