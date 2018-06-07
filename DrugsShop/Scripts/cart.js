@@ -23,8 +23,7 @@ function clickAdd(id) {
 
 function getCartId() {
     var id = [];
-    for (var i = 0; i < localStorage.length; i++)
-    {
+    for (var i = 0; i < localStorage.length; i++) {
         if (i > 0) id.push(i);
     }
     return id;
@@ -37,19 +36,6 @@ function getCartAmount() {
     }
     return amount;
 }
-
-//function openCart() {
-//    var amount = [];
-//    var id = [];
-
-//    for (var i = 0; i < localStorage.length; i++) {
-//        if (i > 0) id.push(localStorage.);
-//        if (i > 0) amount.push(localStorage[i]);
-//    }
-
-//    var url = 'Cart/GetCart' + '?id=' + id + '&amount=' + amount;
-//    window.location.replace(url);
-//}
 
 function getProducts() {
     var products = [];
@@ -69,20 +55,26 @@ function getProducts() {
     return products
 }
 
-function openCart() {
-    var products = getProducts();
+function getProductsPrimitive() {
+    var ids = [];
+    var amounts = [];
+    var id;
+    var amount;
 
-    $.ajax({
-        url: 'Cart/Calculate',
-        type: 'POST',
-        data: JSON.stringify(products),
-        contentType: "application/json;charset=utf-8"
-    });
+    for (var key in localStorage) {
+        id = key;
+        if (id > 0) {
+            amount = localStorage[key];
+            ids.push(Number(id));
+            amounts.push(Number(amount));
+        }
+    }
+
+    return { "ids": ids, "amounts": amounts };
 }
 
 function checkout(status) {
-    if (status == 2)
-    {
+    if (status === 2) {
         var products = getProducts();
 
         $.ajax({
@@ -92,8 +84,7 @@ function checkout(status) {
             contentType: "application/json;charset=utf-8"
         });
     }
-    else
-    {
+    else {
         var url = 'User/Login'
         window.location.replace(url);
     }

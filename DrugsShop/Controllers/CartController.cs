@@ -12,36 +12,39 @@ namespace DrugsShop.Controllers
         DrugsShopEntities db = new DrugsShopEntities();
         // GET: Cart
 
-        //[HttpGet]
-        public ActionResult GetCart(CartProduct[] cart, int sum)
+        [HttpPost]
+        public PartialViewResult CalculateCart(string ids, string amounts)
         {
-            ViewBag.Sum = sum;
-            return View(cart);
-        }
+            CartFinal cartFinal = new CartFinal();
 
-        //[HttpPost]
-        public ActionResult Calculate(Position[] position)
-        {
-            int sum = 0;
-            List<CartProduct> cart = new List<CartProduct>();
-            for (int i = 0; i < position.Length; i++)
+            cartFinal.Cart = new List<CartProduct>();
+            List<Product> prs = db.Products.ToList();
+            List<Position> positions = new List<Position>();
+
+            for (int i = 0; i < ids.Count(s => s == ',') + 1; i++)
+            {
+                positions.Add(new Position { Id = ids.Split(',').Select(n => Convert.ToInt32(n)).ToArray()[i], Amount = amounts.Split(',').Select(n => Convert.ToInt32(n)).ToArray()[i] });
+
+            }
+
+
+            foreach (Position p in positions)
             {
                 CartProduct product = new CartProduct();
-                int pId = position[i].Id;
-                List<Product> prs = db.Products.ToList();
-                Product pr = prs.First(s => s.Id == pId );
-                product.Amount = position[i].Amount;
+
+                Int32 pId = p.Id;
+                Product pr = prs.First(s => s.Id == pId);
+                product.Amount = p.Amount;
                 product.ByRecipe = pr.ByRecipe;
                 product.Cost = pr.Cost;
                 product.Id = pr.Id;
                 product.Name = pr.Name;
                 product.Sum = pr.Cost * product.Amount;
-                sum += product.Sum;
 
-                cart.Add(product);
+                cartFinal.Cart.Add(product);
             }
 
-            return RedirectToAction("GetCart", "Cart", new { cart = cart.ToArray(), sum = sum });
+            return PartialView(cartFinal);
         }
 
         public ActionResult Checkout(Position[] positions)

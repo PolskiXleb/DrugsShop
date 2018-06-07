@@ -2,9 +2,6 @@
 @using PagedList.Mvc
 @using DrugsShop.Models
 @model IPagedList<Product>
-@{
-    Layout = "~/Views/Shared/_Head.cshtml";
-}
 
 @using (Html.BeginForm("Index", "Product", FormMethod.Get))
 {
@@ -72,6 +69,31 @@
 </table>
     </div>
 
+@using (Html.BeginForm("CalculateCart", "Cart", FormMethod.Post, new { @id = "calculateCartForm" }))
+{
+    <input type="hidden" value="@ViewBag.BookId" name="BookId" />
+        <p><input type="submit" value="Заказать" /></p>
+}
+</div>
+
+<script>
+    document.getElementById('calculateCartForm').onsubmit = function(){
+        var products = getProductsPrimitive();
+
+        var inputIds = document.createElement('input');
+        inputIds.type = 'hidden';
+        inputIds.name = 'ids';
+        inputIds.value = products.ids;
+        this.appendChild(inputIds);
+
+        var inputAmounts = document.createElement('input');
+        inputAmounts.type = 'hidden';
+        inputAmounts.name = 'amounts';
+        inputAmounts.value = products.amounts;
+        this.appendChild(inputAmounts);
+
+    };
+</script>
 
 @*<div class="d3">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>*@
 
